@@ -132,3 +132,4 @@ newbee-mall 项目是一套电商系统，包括 newbee-mall 商城系统及 new
 - [Vuex](https://github.com/vuejs/vuex/tree/4.0)
 - [Vant](https://github.com/youzan/vant)
 - [better-scroll](https://github.com/ustbhuangyi/better-scroll)
+- 转载
