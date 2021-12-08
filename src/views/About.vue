@@ -32,7 +32,8 @@
     <hr />
     <button @click="goHome('user')">我的</button>
     <button @click="getRoute">路由属性</button>
-    <p>全局配置属性：{{$name}} {{$axios}}</p>
+    <p>全局配置属性使用：{{$name}}</p>
+    <button @click="getData">全局axios请求</button>
 
   </div>
 </template>
@@ -47,7 +48,8 @@ export default {
     sHeader
   },
   // setup介于beforeCreate、Created钩子之间的函数。不能使用this、data、methods
-  setup () { //开始创建组件
+  // context  上下文对象，该对象暴露了以前在 this 上暴露的 property 的选择列表
+  setup (props, context) { //开始创建组件
 
     // ******定义----------------------------------------------------------------
     const router = useRouter()
@@ -63,7 +65,8 @@ export default {
       bool: true,
     })
     const inputRefs = ref(null)
-    const { ctx } = getCurrentInstance()
+    const { ctx, appContext } = getCurrentInstance()
+    const $axios = appContext.config.globalProperties.$axios
 
     // ********路由----------------------------------------------------------------
     // 跳转
@@ -79,23 +82,26 @@ export default {
 
     // ********生命周期----------------------------------------------------------------
     onBeforeMount(() => {
-      console.log('生命周期--beforeMount -- 组件挂载到页面之前执行')
+      // console.log('生命周期--beforeMount -- 组件挂载到页面之前执行')
     })
     onMounted(() => {
-      console.log('生命周期--mounted -- 组件挂载到页面之后执行')
-      console.log(ctx, 'ctx----')
+      // console.log('生命周期--mounted -- 组件挂载到页面之后执行')
+      console.log(ctx, appContext, 'ctx----')
+      console.log(props, context)
+
+
     })
     onBeforeUpdate(() => {
-      console.log('生命周期--beforeUpdate--组件更新之前')
+      // console.log('生命周期--beforeUpdate--组件更新之前')
     })
     onUpdated(() => {
-      console.log('生命周期--updated -- 组件更新之后')
+      // console.log('生命周期--updated -- 组件更新之后')
     })
     onBeforeUnmount(() => {
-      console.log('生命周期--beforeUnmount -- 组件卸载之前')
+      // console.log('生命周期--beforeUnmount -- 组件卸载之前')
     })
     onUnmounted(() => {
-      console.log('生命周期--unmounted -- 组件卸载之后')
+      // console.log('生命周期--unmounted -- 组件卸载之后')
     })
     // ********计算属性----------------------------------------------------------------
     const ages = computed(() => {
@@ -126,6 +132,14 @@ export default {
       state.list = []
     }
 
+    // ********全局配置axios请求----------------------------------------------------------------
+    const getData = () => {
+      // 使用全局配置的axios请求
+      $axios.get('/index-infos').then(res => {
+        console.log(res, '000')
+      })
+    }
+
     // ********导出----------------------------------------------------------------
     return {
       ...toRefs(state),
@@ -134,7 +148,8 @@ export default {
       reset,
       goHome,
       getRoute,
-      ages
+      ages,
+      getData
     }
 
   }
