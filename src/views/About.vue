@@ -32,12 +32,14 @@
     <hr />
     <button @click="goHome('user')">我的</button>
     <button @click="getRoute">路由属性</button>
+    <p>全局配置属性：{{$name}} {{$axios}}</p>
 
   </div>
 </template>
 
 <script>
 import { reactive, toRefs, ref, watch, computed, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue'
+import { getCurrentInstance } from 'vue'  //使用全局配置属性
 import { useRoute, useRouter } from 'vue-router'
 import sHeader from '@/components/SimpleHeader'
 export default {
@@ -61,6 +63,7 @@ export default {
       bool: true,
     })
     const inputRefs = ref(null)
+    const { ctx } = getCurrentInstance()
 
     // ********路由----------------------------------------------------------------
     // 跳转
@@ -74,14 +77,13 @@ export default {
     }
 
 
-
-
     // ********生命周期----------------------------------------------------------------
     onBeforeMount(() => {
       console.log('生命周期--beforeMount -- 组件挂载到页面之前执行')
     })
     onMounted(() => {
       console.log('生命周期--mounted -- 组件挂载到页面之后执行')
+      console.log(ctx, 'ctx----')
     })
     onBeforeUpdate(() => {
       console.log('生命周期--beforeUpdate--组件更新之前')

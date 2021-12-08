@@ -3,6 +3,7 @@ import { ActionBar, ActionBarIcon, ActionBarButton, Divider, Popup, Overlay, Loa
 import App from './App.vue'
 import store from './store'
 import router from './router'
+import axios from 'axios'
 import 'lib-flexible/flexible'
 import 'vant/lib/index.css'; // 全局引入样式
 
@@ -19,6 +20,9 @@ app.config.globalProperties.$filters = {
     }
   }
 }
+// 全局属性配置 globalProperties 代替vue2的propotype
+app.config.globalProperties.$name = '全局名称'
+app.config.globalProperties.$axios = axios
 
 app.use(ActionBarButton)
   .use(ActionBarIcon)
