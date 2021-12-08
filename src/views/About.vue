@@ -1,15 +1,7 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *-->
 <template>
   <div class="about">
     <s-header :name="'关于我们'"></s-header>
-    <div class="about-body">
+    <!-- <div class="about-body">
       <img class="intro-img" src="https://s.yezgea02.com/1604046067055/WechatIMG30231.jpeg" alt="">
       <van-divider :style="{ color: '#1baeae', borderColor: '#1baeae', fontSize: '20px', fontWeight: 500 }">简介</van-divider>
       <div>newbee-mall 项目是一套电商系统，包括 newbee-mall 商城系统及 newbee-mall-admin 商城后台管理系统，基于 Spring Boot 2.X 及相关技术栈开发。 前台商城系统包含首页门户、商品分类、新品上线、首页轮播、商品推荐、商品搜索、商品展示、购物车、订单结算、订单流程、个人订单管理、会员中心、帮助中心等模块。 后台管理系统包含数据面板、轮播图管理、商品管理、订单管理、会员管理、分类管理、设置等模块。</div>
@@ -24,31 +16,141 @@
         <br/>
         <div>线上预览地址：<a target="_blank" href="http://47.99.134.126:5000/">http://vue-app.newbee.ltd</a></div>
       </div>
-    </div>
+    </div> -->
+    <div v-for="item in list" :key="item.id">{{item.name}}--{{item.age}}</div>
+    <input type="text" ref="inputRefs">
+    <ul>
+      <li>姓名：{{name}}</li>
+      <li>年龄：{{ages}}</li>
+      <li>bool：{{bool}}</li>
+    </ul>
+
+    <button @click="name='小红'">修改姓名</button>
+    <button @click="age=19">修改年龄</button>
+    <button @click="reset">重置</button>
+    <button @click="getRefVal">refbtn</button>
+    <hr />
+    <button @click="goHome('user')">我的</button>
+    <button @click="getRoute">路由属性</button>
+
   </div>
 </template>
 
 <script>
+import { reactive, toRefs, ref, watch, computed, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import sHeader from '@/components/SimpleHeader'
 export default {
   components: {
     sHeader
   },
+  // setup介于beforeCreate、Created钩子之间的函数。不能使用this、data、methods
+  setup () { //开始创建组件
+
+    // ******定义----------------------------------------------------------------
+    const router = useRouter()
+    const route = useRoute()
+    const state = reactive({
+      name: '小美女',
+      age: 18,
+      list: [
+        { id: 1, name: '校长', age: 67 },
+        { id: 2, name: '特级教师', age: 37 },
+        { id: 3, name: '教师', age: 24 },
+      ],
+      bool: true,
+    })
+    const inputRefs = ref(null)
+
+    // ********路由----------------------------------------------------------------
+    // 跳转
+    const goHome = (paths) => {
+      router.push({ path: paths })  //方法1
+      // router.push('/user')   //方法2
+    }
+    // 属性
+    const getRoute = () => {
+      console.log(route, '路由数据')
+    }
+
+
+
+
+    // ********生命周期----------------------------------------------------------------
+    onBeforeMount(() => {
+      console.log('生命周期--beforeMount -- 组件挂载到页面之前执行')
+    })
+    onMounted(() => {
+      console.log('生命周期--mounted -- 组件挂载到页面之后执行')
+    })
+    onBeforeUpdate(() => {
+      console.log('生命周期--beforeUpdate--组件更新之前')
+    })
+    onUpdated(() => {
+      console.log('生命周期--updated -- 组件更新之后')
+    })
+    onBeforeUnmount(() => {
+      console.log('生命周期--beforeUnmount -- 组件卸载之前')
+    })
+    onUnmounted(() => {
+      console.log('生命周期--unmounted -- 组件卸载之后')
+    })
+    // ********计算属性----------------------------------------------------------------
+    const ages = computed(() => {
+      let num = state.age + parseInt(10)
+      return num
+    })
+    // ********监听----------------------------------------------------------------
+    watch(() => state.name, (newVal, oldVal) => {
+      console.log("姓名改变了:", newVal, oldVal);
+    });
+    watch(() => state.age, (newVal, oldVal) => {
+      console.log("年龄改变了:", newVal, oldVal);
+    });
+
+
+    // ********方法----------------------------------------------------------------
+    // 获取inputdom  和 value
+    const getRefVal = () => {
+      console.log(inputRefs.value.value, '----')
+      inputRefs.value.value = ''
+    }
+
+    // 重置
+    const reset = () => {
+      state.name = '小美女'
+      state.age = 18
+      state.bool = false
+      state.list = []
+    }
+
+    // ********导出----------------------------------------------------------------
+    return {
+      ...toRefs(state),
+      inputRefs,
+      getRefVal,
+      reset,
+      goHome,
+      getRoute,
+      ages
+    }
+
+  }
 }
 </script>
 
 <style lang="less" scoped>
-  .about {
-    box-sizing: border-box;
-    padding: 20px;
-    .intro-img {
-      width: 100%;
-    }
-    .about-body {
-      font-size: 16px;
-      a {
-        color: #007fff;
-      }
+.about {
+  box-sizing: border-box;
+  padding: 20px;
+  .intro-img {
+    width: 100%;
+  }
+  .about-body {
+    font-size: 16px;
+    a {
+      color: #007fff;
     }
   }
+}
 </style>
