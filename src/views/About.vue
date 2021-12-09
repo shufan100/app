@@ -136,7 +136,7 @@ export default {
     const getData = () => {
       // 使用全局配置的axios请求
       $axios.get('/index-infos').then(res => {
-        console.log(res, '000')
+        console.log(res, '000111')
       })
     }
 
