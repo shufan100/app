@@ -28,7 +28,7 @@
         <van-icon name="arrow" />
       </li>
       <li @click="goTo('/about')">
-        <span>关于我们</span>
+        <span>关于我们 -- {{store.state.num}}</span>
         <van-icon name="arrow" />
       </li>
     </ul>
@@ -42,6 +42,7 @@ import navBar from '@/components/NavBar'
 import sHeader from '@/components/SimpleHeader'
 import { getUserInfo } from '@/service/user'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 export default {
   components: {
     navBar,
@@ -49,6 +50,7 @@ export default {
   },
   setup () {
     const router = useRouter()
+    const store = useStore()
     const state = reactive({
       user: {},
       loading: true
@@ -71,7 +73,8 @@ export default {
     return {
       ...toRefs(state),
       goBack,
-      goTo
+      goTo,
+      store
     }
   }
 }

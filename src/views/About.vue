@@ -33,6 +33,7 @@
     <button @click="goHome('user')">我的</button>
     <button @click="getRoute">路由属性</button>
     <p>全局配置属性使用：{{$name}}</p>
+    <p>vuex：{{store.state.tip}} -- {{store.state.num}}</p>
     <button @click="getData">全局axios请求</button>
 
   </div>
@@ -42,6 +43,7 @@
 import { reactive, toRefs, ref, watch, computed, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue'
 import { getCurrentInstance } from 'vue'  //使用全局配置属性
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import sHeader from '@/components/SimpleHeader'
 export default {
   components: {
@@ -67,6 +69,7 @@ export default {
     const inputRefs = ref(null)
     const { ctx, appContext } = getCurrentInstance()
     const $axios = appContext.config.globalProperties.$axios
+    const store = useStore()
 
     // ********路由----------------------------------------------------------------
     // 跳转
@@ -86,8 +89,8 @@ export default {
     })
     onMounted(() => {
       // console.log('生命周期--mounted -- 组件挂载到页面之后执行')
-      console.log(ctx, appContext, 'ctx----')
-      console.log(props, context)
+      console.log(ctx, appContext, props, context, 'ctx----')
+      console.log(store.state.tip,)
 
 
     })
@@ -103,11 +106,13 @@ export default {
     onUnmounted(() => {
       // console.log('生命周期--unmounted -- 组件卸载之后')
     })
+
     // ********计算属性----------------------------------------------------------------
     const ages = computed(() => {
       let num = state.age + parseInt(10)
       return num
     })
+
     // ********监听----------------------------------------------------------------
     watch(() => state.name, (newVal, oldVal) => {
       console.log("姓名改变了:", newVal, oldVal);
@@ -117,7 +122,7 @@ export default {
     });
 
 
-    // ********方法----------------------------------------------------------------
+    // ********click方法----------------------------------------------------------------
     // 获取inputdom  和 value
     const getRefVal = () => {
       console.log(inputRefs.value.value, '----')
@@ -134,6 +139,8 @@ export default {
 
     // ********全局配置axios请求----------------------------------------------------------------
     const getData = () => {
+      store.dispatch('tipAction', '修改后的tip')
+      store.dispatch('numAction')
       // 使用全局配置的axios请求
       $axios.get('/index-infos').then(res => {
         console.log(res, '000111')
@@ -149,7 +156,8 @@ export default {
       goHome,
       getRoute,
       ages,
-      getData
+      getData,
+      store
     }
 
   }
