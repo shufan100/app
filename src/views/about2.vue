@@ -40,6 +40,7 @@
 </template>
 
 <script>
+// Vue3.0版本
 // 不用导出，不需要注册  
 import { reactive, toRefs, ref, watch, computed, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue'
 import { getCurrentInstance } from 'vue'  //使用全局配置属性
@@ -92,8 +93,6 @@ export default {
       // console.log('生命周期--mounted -- 组件挂载到页面之后执行')
       console.log(ctx, appContext, props, context, 'ctx----')
       console.log(store.state.tip,)
-
-
     })
     onBeforeUpdate(() => {
       // console.log('生命周期--beforeUpdate--组件更新之前')

@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/about'
+      redirect: '/home'
     },
     {
       path: '/home',
@@ -27,6 +27,14 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue'),
+      meta: {
+        index: 2
+      }
+    },
+    {
+      path: '/about2',
+      name: 'about2',
+      component: () => import(/* webpackChunkName: "about" */ '@/views/abouts.vue'),
       meta: {
         index: 2
       }

@@ -31,6 +31,10 @@
         <span>关于我们 -- {{store.state.num}}</span>
         <van-icon name="arrow" />
       </li>
+      <li @click="goTo('/about2')">
+        <span>关于我们2 -- {{store.state.num}}</span>
+        <van-icon name="arrow" />
+      </li>
     </ul>
     <nav-bar></nav-bar>
   </div>
